@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjz.product.mapper.ProductMapper">
+
+    <insert id="addProductBace" parameterType="com.zjjz.model.product.ProductBace" useGeneratedKeys="true" keyProperty="pid">
+        INSERT INTO productbace VALUES
+        (null,#{pname},#{pdetial},#{pnumber},#{pictures,jdbcType=VARCHAR},#{price},#{beginTime},#{updateTime},#{cidone},#{cidtwo})
+    </insert>
+
+    <insert id="addProduceMarket" parameterType="com.zjjz.model.product.ProductMarket">
+        INSERT INTO productmarket VALUES (#{id},#{pid},#{type},#{description},#{picture})
+    </insert>
+
+    <select id="findProductById" resultType="com.zjjz.model.product.ProductBace" parameterType="integer">
+        SELECT * FROM productbace WHERE pid =#{pid}
+    </select>
+    
+    <select id="findProductBaceByCondition" resultType="com.zjjz.model.product.ProductBace" parameterType="com.zjjz.model.product.ProductCondition">
+       SELECT * FROM productbace
+       <where>
+           <if test="pname != null and pname != ''">
+               pname LIKE '%${pname}%'
+           </if>
+           <if test="pdetial != null and pdetial != ''">
+               AND pdetial LIKE '%${pdetial}%'
+           </if>
+           <if test="cidone != null">
+               AND cidone = #{cidone}
+           </if>
+           <if test="cidtwo != null">
+               AND cidtwo =#{cidtwo}
+           </if>
+           <if test="minPrice != null and maxPrice != null ">
+               AND price BETWEEN #{minPrice} AND #{maxPrice}
+           </if>
+       </where>
+    </select>
+
+    <select id="findProductMarketByPid" resultType="com.zjjz.model.product.ProductMarket" parameterType="integer">
+        SELECT * FROM productmarket WHERE pid = #{pid} ORDER BY description
+    </select>
+
+    <delete id="deleteProductById" parameterType="integer">
+        DELETE FROM productbace WHERE pid = #{pid}
+    </delete>
+
+    <delete id="deleteProductMarketByPid" parameterType="integer">
+        DELETE FROM productmarket WHERE pid = #{pid}
+    </delete>
+
+    <delete id="deleteProductMarketById" parameterType="integer">
+        DELETE FROM productmarket WHERE id =#{id}
+    </delete>
+
+    <update id="updateProductById" parameterType="com.zjjz.model.product.ProductBace">
+        UPDATE productbace
+        <set>
+            <if test="pname != null and pname != '' ">pname = #{pname},</if>
+            <if test="cidone != null">cidone = #{cidone},</if>
+            <if test="cidtwo != null">cidtwo = #{cidtwo},</if>
+            <if test="pnumber != null">pnumber = #{pnumber},</if>
+            <if test="pictures != null and pictures != '' != null">pictures = #{pictures},</if>
+            <if test="updateTime != null">updateTime = #{updateTime},</if>
+            <if test="price != null">price = #{price}</if>
+        </set>
+        WHERE pid = #{pid}
+    </update>
+
+    <update id="updateProductMarketById" parameterType="com.zjjz.model.product.ProductMarket">
+        UPDATE productmarket
+        <set>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="picture != null and picture != ''">picture = #{picture}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjjz.ucenter.mapper.AdminMapper">
+
+    <select id="findAdminByAname" resultType="com.zjjz.model.user.Admin" parameterType="string">
+        SELECT a.*,h.url
+        FROM admin a, headportrait h
+        WHERE a.aname = #{aname} AND a.hid = h.hid
+    </select>
+
+    <select id="findAnameNumer" resultType="java.lang.Integer" parameterType="string">
+        SELECT count(aname) FROM admin WHERE aname = #{aname}
+    </select>
+
+
+</mapper>
